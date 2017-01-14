@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{{ url_for('static', filename = 'favicon.ico') }}">
+
+    <title>Sign Up</title>
+
+    <link href="{{ url_for('static', filename = 'bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename = 'signin.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename = 'jumbotron-narrow.css') }}" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <div class="container">
+      {% include "navbar.html" %}
+      <form class="form-signin" id="signupForm">
+        <h2 class="form-signin-heading">Please sign up</h2>
+        <label for="inputEmail" class="sr-only">Email address</label>
+        <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email address" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" id="submit-btn">Sign up</button>
+        <br>
+        <div class="alert" id="msgBoard"></div>
+      </form>
+
+    </div> 
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script type="text/javascript">
+        $('#signupForm').submit(function(event){
+        event.preventDefault();
+        $.ajax({
+          type: 'POST',
+          url : "/register/?state={{STATE}}",
+          data: $('#signupForm').serialize(),
+          success: function(username){
+            $(#submit-btn).hide();
+            Msg = "Registration successful. " + "Welcome, " + username + " ! ";
+            $('#msgBoard').removeClass('alert-danger').addClass("alert-success").text(Msg);
+            setTimeout(function(){
+              window.location.href = "/"
+            }, 2000);
+          },
+          error: function(errorMsg){
+            console.log(errorMsg);
+            Msg = "Sorry, " + errorMsg.responseJSON + " Registration failed. Please try again!"
+            $('#msgBoard').removeClass('alert-success').addClass("alert-danger").text(Msg);
+
+          }
+        })
+    });
+  </script>
+
+  </body>
+
+</html>

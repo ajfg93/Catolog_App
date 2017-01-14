@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{{ url_for('static', filename = 'favicon.ico') }}">
+
+    <title>Delete Item</title>
+
+    <link href="{{ url_for('static', filename = 'bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename = 'jumbotron-narrow.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename = 'my.css') }}" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <div class="container">
+      {% include "navbar.html" %}
+        <h2>Delete item</h2>
+ 		<p>Are you sure you want to delete ?</p>
+        <div class="alert" id="msgBoard"></div>
+        <p><button type="button" class="btn btn-info u-btn-back" onclick="history.back()">Back</button></p>
+        <button class="btn btn-default" id="submit-btn" onclick="delete();">Submit</button>
+    </div> 
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script type="text/javascript">
+  		function delete(){
+	        $.ajax({
+	          type: 'POST',
+	          url : "/catalog/delete/?state={{STATE}}",
+	          success: function(Msg){
+	            $('#submit-btn').hide();
+	            $('#msgBoard').removeClass('alert-danger').addClass("alert-success").text(Msg);
+	            setTimeout(function(){
+	              window.location.href = "/"
+	            }, 3000);
+	          },
+	          error: function(errorMsg){
+	            console.log(errorMsg);
+	            Msg = "Sorry, " + errorMsg.responseJSON + " Add Item failed. Please try again!"
+	            $('#msgBoard').removeClass('alert-success').addClass("alert-danger").text(Msg);
+	          }
+	        });  			
+  		}
+  </script>  
+  </body>
+</html>

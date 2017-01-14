@@ -1,0 +1,30 @@
+
+     <div class="jumbotron">
+        <h1>Message Board</h1>
+        <p class="lead"></p>
+        <div class="alert" id="msgBoard"></div>
+        	{% if not isLogin %}
+        	<div>
+        		<form class="navbar-form navbar-right" id="loginForm">
+          		  <div class="form-group">
+              		<input type="text" name="email" placeholder="Email" class="form-control" required autofocus>
+           		 </div>
+           		 <div class="form-group">
+             		<input type="password" name="password" placeholder="Password" class="form-control" required>
+           		 </div>
+           			<button type="submit" class="btn btn-success">Log in</button>
+         		</form>
+        	</div>
+        	
+	 		<!-- <p><a class="btn btn-success" href="#" role="button">Login</a></p> -->
+
+   		<div class="fb-login-button" id="fb-btn"
+			data-max-rows="1" 
+			data-size="large" 
+			data-show-faces="false"
+			data-auto-logout-link="false" 
+		    data-scope = "public_profile, email"
+	 		onlogin = "sendTokenToServer()">
+	 	</div>
+	 	{% endif %}
+      </div>

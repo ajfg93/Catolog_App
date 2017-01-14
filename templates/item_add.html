@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{{ url_for('static', filename = 'favicon.ico') }}">
+
+    <title>Add Item</title>
+
+    <link href="{{ url_for('static', filename = 'bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename = 'jumbotron-narrow.css') }}" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <div class="container">
+      {% include "navbar.html" %}
+        <h2>Add item</h2>
+        <form role="form" id="addItemForm">
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" class="form-control" id="title" placeholder="" name='title'>
+          </div>
+          <div class="form-group">
+            <label for="description">description</label>
+            <textarea class="form-control" rows="3" id="description" placeholder="" name="description"></textarea>
+          </div>         
+          <div class="form-group">
+            <select class="form-control" name="category_id">
+              {% for cate in cates %}
+              <option value="{{cate.id}}">{{cate.name}}</option>
+              {% endfor %}
+            </select>            
+          </div>  
+          <div class="alert" id="msgBoard"></div>
+          <button type="submit" class="btn btn-default" id="submit-btn">Submit</button>
+        </form>      
+
+    </div> 
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script type="text/javascript">
+        $('#addItemForm').submit(function(event){
+        event.preventDefault();
+        $.ajax({
+          type: 'POST',
+          url : "/catalog/new/?state={{STATE}}",
+          data: $('#addItemForm').serialize(),
+          success: function(Msg){
+            $('#submit-btn').hide();
+            $('#msgBoard').removeClass('alert-danger').addClass("alert-success").text(Msg);
+            setTimeout(function(){
+              window.location.href = "/"
+            }, 2000);
+          },
+          error: function(errorMsg){
+            console.log(errorMsg);
+            Msg = "Sorry, " + errorMsg.responseJSON + " Add Item failed. Please try again!"
+            $('#msgBoard').removeClass('alert-success').addClass("alert-danger").text(Msg);
+          }
+        })
+    });    
+  </script>
+  </body>
+</html>

@@ -1,0 +1,123 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{{ url_for('static', filename = 'favicon.ico') }}">
+
+    <title>Catolog App</title>
+    <link href="{{ url_for('static', filename = 'bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename = 'jumbotron-narrow.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename = 'my.css') }}" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+  
+
+    <div class="container">
+      {% include "navbar.html" %}
+      {% include "jumbotron.html" %}
+      <div class="row marketing">
+         {% include "cate_left.html" %}
+         {% include "item_right.html" %}
+      </div>
+    </div>
+
+      <hr>
+      <footer>
+        <p>&copy; 2016 Company, Inc.</p>
+      </footer>
+    </div> 
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename = 'bootstrap.min.js') }}"></script>
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '1315994791757188',
+          xfbml      : true,
+          version    : 'v2.8'
+        });
+        FB.AppEvents.logPageView();
+      };
+
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "//connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+     </script>
+
+  <script type="text/javascript">
+    function sendTokenToServer(){
+      var access_token;
+      FB.getLoginStatus(function(response){
+        access_token = response.authResponse.accessToken
+      });
+
+      $.ajax({
+        type: 'POST',
+        url: '/fbconnect?state={{STATE}}',
+        processData: false,
+        data: access_token,
+        contentType: 'application/octet-stream; charset=utf-8',
+        timeout: 20000,
+        success: function(username){
+          Msg = "Welcome, " + username + " !";
+          $('#msgBoard').removeClass('alert-danger').addClass("alert-success").text(Msg);
+            $('#loginForm').hide();
+            $('#signUp').hide();
+            $('#fb-btn').hide();
+            $('#logOut').show();
+        },
+        error: function(errorMsg, textStatus){
+          if (textStatus === 'timeout'){
+            Msg = "Failed to connect Facebook. Are you fucking in China?"
+            $('#msgBoard').removeClass('alert-success').addClass("alert-danger").text(Msg);                 
+          }
+          else{
+            Msg = "Sorry, " + errorMsg + " Login Failed. Please try again!"
+            $('#msgBoard').removeClass('alert-success').addClass("alert-danger").text(Msg);
+          }
+        }
+      });
+    }
+  </script>
+  <script type="text/javascript">
+    $('#loginForm').submit(function(event){
+        event.preventDefault();
+        $.ajax({
+          type: 'POST',
+          url : "/login?state={{STATE}}",
+          data: $('#loginForm').serialize(),
+          success: function(username){
+            Msg = "Welcome, " + username + " !";
+            $('#msgBoard').removeClass('alert-danger').addClass("alert-success").text(Msg);
+
+            $('#loginForm').hide();
+            $('#signUp').hide();
+            $('#fb-btn').hide();
+            $('#logOut').show();
+          },
+          error: function(errorMsg){
+            Msg = "Sorry, " + errorMsg.responseJSON + " Login Failed. Please try again!"
+            $('#msgBoard').removeClass('alert-success').addClass("alert-danger").text(Msg);
+
+          }
+        })
+    });
+  </script>
+  </body>
+</html>

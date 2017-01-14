@@ -1,0 +1,10 @@
+<div class="header clearfix">
+        <nav>
+          <ul class="nav nav-pills pull-right">
+            <li role="presentation"><a href="/">Home</a></li>
+            <li role="presentation" id="signUp" {% if isLogin %} style = 'display: none;' {% endif %}><a href="{{ url_for('register') }}">Sign Up</a></li>
+            <li role="presentation" id="logOut" {% if not isLogin %} style = 'display: none;' {% endif %}><a href="{{ url_for('logOut') }}">Log out</a></li>
+          </ul>
+        </nav>
+        <h3 class="text-muted">Catolog App</h3>
+</div>

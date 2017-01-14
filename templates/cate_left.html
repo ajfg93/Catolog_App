@@ -1,0 +1,9 @@
+     <div class="row">
+        <div class="col-md-4">
+  		   <h2>Categories</h2>
+          	<ul class="list-group">
+ 		      {% for cate in cates %}
+ 		      	 <li class="list-group-item"><a href="{{url_for('showItems', category = cate.name)}}">{{cate.name}}</a></li>
+ 		      {% endfor %}
+          	</ul>
+        </div>
