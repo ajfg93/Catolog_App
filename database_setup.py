@@ -23,7 +23,6 @@ class Category(Base):
 		return {
 		"id" : self.id,
 		"name" : self.name,
-		"Item" : [],
 	}
 
 class Item(Base):
@@ -42,7 +41,7 @@ class Item(Base):
 			'cat_id' : self.category_id,
 			'description' : self.description,
 			'id' : self.id,
-			'title' : self.name
+			'name' : self.name
 		}
 
 

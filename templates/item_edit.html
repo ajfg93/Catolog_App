@@ -49,7 +49,7 @@
         event.preventDefault();
         $.ajax({
           type: 'POST',
-          url : "/catalog/edit/?state={{STATE}}",
+          url : "/catalog/{{item.name}}/edit/?state={{STATE}}",
           data: $('#editItemForm').serialize(),
           success: function(Msg){
             $('#submit-btn').hide();

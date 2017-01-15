@@ -23,15 +23,15 @@
  		<p>Are you sure you want to delete ?</p>
         <div class="alert" id="msgBoard"></div>
         <p><button type="button" class="btn btn-info u-btn-back" onclick="history.back()">Back</button></p>
-        <button class="btn btn-default" id="submit-btn" onclick="delete();">Submit</button>
+        <button class="btn btn-default" id="submit-btn" onclick="deleteItem();">Submit</button>
     </div> 
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <script type="text/javascript">
-  		function delete(){
+  		function deleteItem(){
 	        $.ajax({
 	          type: 'POST',
-	          url : "/catalog/delete/?state={{STATE}}",
+	          url : "/catalog/{{item.name}}/delete/?state={{STATE}}",
 	          success: function(Msg){
 	            $('#submit-btn').hide();
 	            $('#msgBoard').removeClass('alert-danger').addClass("alert-success").text(Msg);

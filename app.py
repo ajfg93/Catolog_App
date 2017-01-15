@@ -1,38 +1,40 @@
 from flask import Flask, render_template, request, redirect, jsonify, url_for, flash
 app = Flask(__name__)
 
-#Import database_setup
+#import database_setup
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import User, Item, Category, Base
 
-engine = create_engine('sqlite:///catelog_app.db')
-Base.metadata.bind = engine
-DBSession = sessionmaker(bind=engine)
-session = DBSession()
-#----------------------------------------------------
 #anti-forgery solution
 import random, string
 from flask import session as login_session
-#------------------------------------------------------
+
 #server-side http request for FB connec
 import httplib2
 import json
 from flask import make_response
-#--------------------------------------
 import hashlib
+
+#database initialize
+engine = create_engine('sqlite:///catelog_app.db')
+Base.metadata.bind = engine
+DBSession = sessionmaker(bind=engine)
+session = DBSession()
+
+#Gloable variable
 #items number showed in index page
 ITEM_SHOW_NUM = 9
 
-@app.route('/catalog.json/')
+@app.route('/JSON/')
 def catalogJSON():
     categories_all = session.query(Category).all()
     items_all = session.query(Item).all()   
-    catalog = { "Category": [cate.serialize for cate in categories_all] }
-    for cate in catalog["Category"]:
-        cate['Item'] = [item.serialize for item in items_all if item.category_id == cate['id']]
-    return jsonify(catalog)
-
+    # catalog = { "Category": [cate.serialize for cate in categories_all] }
+    # for cate in catalog["Category"]:
+    #     cate['Item'] = [item.serialize for item in items_all if item.category_id == cate['id']]
+    # return jsonify(catalog)
+    return jsonify(Category = [c.serialize for c in categories_all], Item = [i.serialize for i in items_all])
 @app.route('/')
 def index():
     #check if login in
@@ -137,7 +139,7 @@ def deleteItem(item):
         if 'user_id' in login_session:
             isLogin = True
         deleteItem = session.query(Item).filter_by(name = item).one()
-        return render_template('item_edit.html', STATE = login_session['state'], isLogin = isLogin, item = deleteItem)
+        return render_template('item_delete.html', STATE = login_session['state'], isLogin = isLogin, item = deleteItem)
   else:
         if request.args.get('state') != login_session['state']:
             return respondToClient("Invaild State.", 401) 
