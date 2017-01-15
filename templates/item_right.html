@@ -1,13 +1,13 @@
        <div class="col-md-8">
            {% if latests %}
- 		  	 <h2>Lastest Items {% if islogin %}<a class="btn btn-default" href="{{ url_for('addItem') }}">Add Item</a> {% endif %}</h2>
+ 		  	 <h2>Lastest Items {% if isLogin %}<a class="btn btn-default" href="{{ url_for('addItem') }}">Add Item</a> {% endif %}</h2>
           		<ul class="list-group">
  		    	 {% for item in items %}
  		      		 <li class="list-group-item"><a href="{{ url_for('showDescription', category = item.category.name, item = item.name) }}">{{item.name}}</a><span>({{item.category.name}})</span></li>
  		     	 {% endfor %}
           		</ul>
           	{% else %}
-      	     <h2>{{uni_cate.name}} Items ({{count}} items) {% if islogin %}<a class="btn btn-default" href="{{ url_for('addItem') }}">Add Item</a>{% endif %}</h2>
+      	     <h2>{{uni_cate.name}} Items ({{count}} items) {% if isLogin %}<a class="btn btn-default" href="{{ url_for('addItem') }}">Add Item</a>{% endif %}</h2>
           		<ul class="list-group">
  		     	{% for item in items %}
  		      		 <li class="list-group-item"><a href="{{ url_for('showDescription', category = uni_cate.name, item = item.name) }}">{{item.name}}</a></li>

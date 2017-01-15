@@ -24,6 +24,14 @@ import hashlib
 #items number showed in index page
 ITEM_SHOW_NUM = 9
 
+@app.route('/catalog.json/')
+def catalogJSON():
+    categories_all = session.query(Category).all()
+    items_all = session.query(Item).all()   
+    catalog = { "Category": [cate.serialize for cate in categories_all] }
+    for cate in catalog["Category"]:
+        cate['Item'] = [item.serialize for item in items_all if item.category_id == cate['id']]
+    return jsonify(catalog)
 
 @app.route('/')
 def index():
