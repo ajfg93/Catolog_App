@@ -26,14 +26,17 @@ session = DBSession()
 #items number showed in index page
 ITEM_SHOW_NUM = 9
 
+
+@app.route('/catalog/<string:category>/<string:item>/JSON/')
+def randomItem(category, item):
+    category = session.query(Category).filter_by(name = category).one()
+    item = session.query(Item).filter_by(name = item).one()
+    return jsonify(category = category.serialize, item = item.serialize)
+
 @app.route('/JSON/')
 def catalogJSON():
     categories_all = session.query(Category).all()
     items_all = session.query(Item).all()   
-    # catalog = { "Category": [cate.serialize for cate in categories_all] }
-    # for cate in catalog["Category"]:
-    #     cate['Item'] = [item.serialize for item in items_all if item.category_id == cate['id']]
-    # return jsonify(catalog)
     return jsonify(Category = [c.serialize for c in categories_all], Item = [i.serialize for i in items_all])
 @app.route('/')
 def index():
@@ -117,13 +120,17 @@ def editItem(item):
             return respondToClient("Invaild State.", 401) 
         if 'user_id' not in login_session:
             return respondToClient("Please login first.", 401) 
+        #check if the editer is the creator
+        editItem = session.query(Item).filter_by(name = item).one()
+        user_id = editItem.user_id
+        if login_session['user_id'] != user_id:
+            return respondToClient("You are not authorized to edit this item", 401)
         #login and state is correct      
         name = request.form['title']
         description = request.form['description']
         category_id = request.form['category_id']
         if not name or not description or not category_id:
             return respondToClient("Failed to get required input", 400)
-        editItem = session.query(Item).filter_by(name = item).one()
         editItem.name = name
         editItem.description = description
         editItem.category_id = category_id
