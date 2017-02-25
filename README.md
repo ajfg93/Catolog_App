@@ -1,10 +1,12 @@
+#A online version
+- visit `http://52.41.206.23/`
+
+
 #How to Run
 
 - `python database_setup.py`
 - `python lotsofitems` 
 - `python app.py`
-
-
 
 #Updated v1.0
 - fix `signup.html` script `ajax` syntax error
