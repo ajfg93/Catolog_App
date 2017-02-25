@@ -1,3 +1,5 @@
 .u-btn-back {position: relative; left:640px;}
 
-#fb-btn {padding-left: 500px;}
+@media only screen and (min-width: 768px){
+	#fb-btn {padding-left: 500px;}	
+}	
