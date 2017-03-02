@@ -6,6 +6,7 @@ A web application that provides a list of items within a variety of categories a
 * Flask
 * SQLite
 * SQLAlchemy
+* Facebook API
 * Bootstrap
 
 #Quickstart
