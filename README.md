@@ -12,7 +12,7 @@ A web application that provides a list of items within a variety of categories a
 # Quickstart
 
 ## install
-project public address: http://52.41.206.23/
+project public address:
 
 ### run locally
 ```
